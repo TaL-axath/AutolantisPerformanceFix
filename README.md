@@ -24,52 +24,23 @@ E8D4E7E8C484562BFA1B00A59B17AD582CE384CE96255B24AC8C6F90DA1DE4F4
 
 安装器和插件会拒绝不匹配的游戏版本。游戏更新后需要重新适配。BepInEx 核心指纹在 package/loader-sha256.txt 中。
 
-## 安装
+## 安装与日常使用
 
-## 完整包快速安装（推荐）
+1. 前往 [Releases](https://github.com/TaL-axath/AutolantisPerformanceFix/releases/latest)，下载 **AutolantisPerformanceFix-0.2.0-Full-win-x64.zip**。
+2. 退出游戏，解压整个 ZIP，双击“安装完整补丁.cmd”。
+3. 选择包含 Autolantis.exe 的游戏目录。安装器自动安装 BepInEx IL2CPP、配套运行时和性能补丁。
+4. 以后正常从 Steam 启动游戏，补丁会自动启用。首次启动可能生成文件并联网下载 Unity 依赖，请等待完成。
+5. 正常退出游戏即可：补丁随游戏进程结束，不留独立后台程序，无需执行任何“关闭补丁”操作。
 
-1. 前往 [Releases](https://github.com/TaL-axath/AutolantisPerformanceFix/releases/latest)，下载 **AutolantisPerformanceFix-0.2.0-Full-win-x64.zip**。不要把自动生成的 Source code ZIP 当作完整安装包。
-2. 退出游戏，把整个 ZIP 解压到任意目录，双击“安装完整补丁.cmd”。
-3. 在弹窗中选择包含 Autolantis.exe 的游戏目录。安装器自动安装 BepInEx IL2CPP 和性能补丁。
-4. 从 Steam 启动。首次启动可能生成 interop 文件并联网下载 Unity 依赖，请等待完成。
-5. 关闭补丁：退出游戏后运行“关闭性能补丁.cmd”。共享加载器和其他插件保留。
+**只需安装一次。** 补丁文件保留在游戏目录，供下次启动时自动加载；退出游戏不等于卸载或禁用下次启动。没有额外启动器、常驻监控或定时任务。
 
-完整包自带 BepInEx 6.0.0-be.790 和 .NET 运行时，不需要玩家单独安装 SDK。不同版本加载器或冲突文件会被拦截，不进行混合覆盖。升级保留已有配置；若配置总开关为 false，需自行启用。
+请选择完整包，不要把 GitHub 自动生成的 Source code ZIP 当作安装包。无需单独下载 BepInEx 或安装 .NET SDK。不同版本加载器或冲突文件会被拦截。
 
-下列手动步骤适用于从源码仓库安装或已有兼容加载器的玩家。
-### 1. 准备加载器（只需一次）
+升级保留已有配置。如果此前手动将 Optimization.Enabled 改为 false，请改回 true 后重启，才能恢复每次启动自动启用。
 
-已有上述版本 BepInEx 的玩家直接进入第 2 步，不需要安装其他工具。
+## 卸载（仅在不再使用时）
 
-1. 退出游戏，在 Steam 中打开“管理 → 浏览本地文件”，找到实际包含 Autolantis.exe 的目录；有些安装目录还需要进入内层 Autolantis 文件夹。
-2. 从 [BepInEx 官方构建站](https://builds.bepinex.dev/projects/bepinex_be) 获取构建 790 的 Unity.IL2CPP-win-x64 包。不要选择 Mono 或 x86 包；BepInEx 5 的常规包也不适用于这里的 IL2CPP 插件。
-3. 将加载器解压到 Autolantis.exe 同级目录。这里应出现 BepInEx、dotnet、winhttp.dll 和 doorstop_config.ini。
-4. 从 Steam 启动一次游戏，等加载器生成配置与 interop 文件后退出。首次生成可能较慢。
-5. 如果已有其他版本加载器，先核对兼容性，不要混合覆盖其文件。
-
-参考：[BepInEx 官方 IL2CPP 安装说明](https://docs.bepinex.dev/master/articles/user_guide/installation/unity_il2cpp.html)。
-
-### 2. 安装性能补丁
-
-1. 下载本仓库文件并解压（GitHub 页面 Code → Download ZIP），进入 package 文件夹。
-2. 双击“安装性能修复.cmd”，选择包含 Autolantis.exe 的游戏目录。
-3. 安装器校验游戏与加载器指纹，并把 Autolantis.SkipFix.dll 放入 BepInEx/plugins。
-4. 从 Steam 启动游戏。BepInEx/LogOutput.log 应出现 Autolantis Skip Fix 0.2.0 和 SkipFix active。
-5. 使用现有存档即可；不需要额外安装旧性能诊断插件。
-
-也可通过命令行指定目录：
-
-~~~powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\package\Install.ps1 -GameDirectory "<游戏目录>"
-~~~
-
-升级会覆盖本插件同名 DLL，不修改其他插件、存档或现有配置。若以前将配置总开关设为 false，请手动改为 true 后重启。
-
-### 3. 关闭与卸载
-
-退出游戏，运行 package/关闭性能修复.cmd，选择游戏目录。它只将本插件 DLL 改名为 .disabled，下次启动即停用。
-
-也可在退出游戏后手动删除 BepInEx/plugins/Autolantis.SkipFix.dll；不要为卸载此插件删除整个 BepInEx。
+退出游戏后删除 BepInEx/plugins/Autolantis.SkipFix.dll，即可停止以后自动加载。本插件没有需另外结束的后台进程。其他插件可能共用 BepInEx，请勿为卸载本插件删除整个加载器目录。
 
 ## 配置
 

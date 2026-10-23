@@ -54,7 +54,7 @@ try {
   New-Item -ItemType Directory -Path (Split-Path $plugin) -Force | Out-Null
   if((Test-Path -LiteralPath $plugin) -and !(Test-Path -LiteralPath ($plugin+'.backup'))){Copy-Item -LiteralPath $plugin -Destination ($plugin+'.backup')}
   Copy-Item -LiteralPath $pluginSource -Destination $plugin -Force
-  $message='完整性能补丁安装成功。请从 Steam 启动；首次启动可能生成加载器文件并下载 Unity 依赖，请耐心等待。'
+  $message='安装成功。以后正常从 Steam 启动即可自动启用；退出游戏时补丁随游戏进程结束，无需手动关闭。首次启动可能下载 Unity 依赖，请耐心等待。'
  }
  Write-Output $message
  if(!$Silent){Add-Type -AssemblyName System.Windows.Forms;[Windows.Forms.MessageBox]::Show($message,'Autolantis 性能补丁') | Out-Null}
