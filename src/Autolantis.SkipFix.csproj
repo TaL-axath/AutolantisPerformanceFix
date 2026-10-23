@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Autolantis.SkipFix</AssemblyName>
+    <Version>0.2.0</Version>
+    <Deterministic>true</Deterministic><DebugType>none</DebugType><DebugSymbols>false</DebugSymbols>
+    <Core>$(GameDirectory)/BepInEx/core</Core>
+    <Interop>$(GameDirectory)/BepInEx/interop</Interop>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MonoMod.RuntimeDetour"><HintPath>$(Core)/MonoMod.RuntimeDetour.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="BepInEx.Core"><HintPath>$(Core)/BepInEx.Core.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="BepInEx.Unity.IL2CPP"><HintPath>$(Core)/BepInEx.Unity.IL2CPP.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="0Harmony"><HintPath>$(Core)/0Harmony.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Il2CppInterop.Runtime"><HintPath>$(Core)/Il2CppInterop.Runtime.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="RogueKingdom.Game"><HintPath>$(Interop)/RogueKingdom.Game.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="RogueKingdom.Core"><HintPath>$(Interop)/RogueKingdom.Core.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Il2Cppmscorlib"><HintPath>$(Interop)/Il2Cppmscorlib.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(Interop)/UnityEngine.CoreModule.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <Target Name="RequireLocalReferences" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(Core)/BepInEx.Unity.IL2CPP.dll')" Text="Set GameDirectory to your game root with BepInEx IL2CPP installed."/>
+    <Error Condition="!Exists('$(Interop)/RogueKingdom.Game.dll')" Text="Run the game once with BepInEx to generate interop assemblies."/>
+  </Target>
+</Project>
